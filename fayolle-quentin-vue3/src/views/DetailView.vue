@@ -2,25 +2,28 @@
 import TheHeader from "../components/TheHeader.vue";
 import TheFooter from "../components/TheFooter.vue";
 
-import { onBeforeMount } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useAmiibosStore } from "../stores/amiibos";
 import { storeToRefs } from "pinia";
 
 const route = useRoute();
+const { params: { tail } } = route;
+console.log(tail);
 
 const amiibosStore = useAmiibosStore();
 const { fetchAmiibo } = amiibosStore;
-const { amiibo } = storeToRefs(amiibosStore);
+const { currentAmiibo } = storeToRefs(amiibosStore);
+let amiibo = ref({});
 
 onBeforeMount(async () => {
-    const {
-        params: { tail },
-    } = route;
-
     await fetchAmiibo(tail);
-    console.log(amiibo.value);
+    amiibo = currentAmiibo.value[0];
+    console.log(amiibo);
 });
+
+
+
 </script>
 
 <template>
@@ -36,10 +39,10 @@ onBeforeMount(async () => {
                   <h3>Infos</h3>
                 </header>
                 <p>
-                  amiiboSeries: <b>Animal Crossing</b> <br />
-                  character: Cube<br />
-                  gameSeries: Animal Crossing<br />
-                  type: card
+                  amiiboSeries: <b>{{amiibo.amiiboSeries}}</b> <br />
+                  character: {{amiibo.character}}<br />
+                  gameSeries: {{amiibo.gameSeries}}<br />
+                  type: {{amiibo.type}}
                 </p>
               </section>
               <section class="box">
@@ -48,8 +51,8 @@ onBeforeMount(async () => {
                 </header>
 
                 <ul class="divided">
-                  <li>au: 2016-03-19</li>
-                  <li>eu: 2016-03-18</li>
+                  <li>au: </li>
+                  <li>eu: </li>
                   <li></li>
                   <li></li>
                 </ul>
@@ -59,17 +62,17 @@ onBeforeMount(async () => {
               <article class="box post">
                 <a href="#" class="featured"
                   ><img
-                    src="https://raw.githubusercontent.com/N3evin/AmiiboAPI/master/images/icon_00800102-035d0302.png"
+                    :src="amiibo.image"
                     alt=""
                 /></a>
                 <header>
-                  <h2>Name</h2>
+                  <h2>{{amiibo.character}}</h2>
                   <p>type</p>
-                </header>
+                </header> 
               </article>
             </div>
           </div>
-        </div>
+        </div>  
       </section>
       <TheFooter />
     </div>

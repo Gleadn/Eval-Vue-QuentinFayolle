@@ -17,7 +17,6 @@ export const useAmiibosStore = defineStore('amiibos', () => {
         const tryToFetch = await ky.get(`https://www.amiiboapi.com/api/amiibo/?tail=${tail}`).json()
         const {amiibo} = tryToFetch
         currentAmiibo.value = amiibo
-        console.log(currentAmiibo)
     }
 
     return { allAmiibos, fetchAllAmiibos , currentAmiibo, fetchAmiibo}
