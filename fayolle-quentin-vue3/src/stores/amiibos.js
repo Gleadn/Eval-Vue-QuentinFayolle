@@ -13,10 +13,11 @@ export const useAmiibosStore = defineStore('amiibos', () => {
         allAmiibos.value = amiibo
     }
 
-    const fetchAmiibo = async (id)=>{
-        const tryToFetch = await ky.get(`https://www.amiiboapi.com/api/amiibo/?tail=${id}`).json()
-        currentAmiibo.value = tryToFetch
-        console.log(currentAmiibo.value)
+    const fetchAmiibo = async (tail)=>{
+        const tryToFetch = await ky.get(`https://www.amiiboapi.com/api/amiibo/?tail=${tail}`).json()
+        const {amiibo} = tryToFetch
+        currentAmiibo.value = amiibo
+        console.log(currentAmiibo)
     }
 
     return { allAmiibos, fetchAllAmiibos , currentAmiibo, fetchAmiibo}
